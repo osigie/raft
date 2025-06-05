@@ -1,0 +1,39 @@
+# Java build output
+*.class
+*.jar
+*.war
+*.ear
+
+# IntelliJ project files
+*.iml
+.idea/
+
+# VSCode settings (in case you use it too)
+.vscode/
+
+# Build directories
+out/
+*/out/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary or backup files
+*~
+*.swp
+*.swo
+
+# Target future raft versions (e.g., raft_002, raft_009, etc.)
+raft_00*/out/
+raft_00*/*.iml
+
+# Optional: if you use Maven or Gradle
+target/
+build/
+
+# Optional: ignore compiled subdirectories within src (if any)
+src/**/**/*.class
