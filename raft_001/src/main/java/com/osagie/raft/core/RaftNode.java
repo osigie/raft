@@ -87,20 +87,20 @@ public class RaftNode {
         }
 
 
-       transport.sendVoteResponse(candidateId, currentTerm, false);
+       transport.sendVoteResponse(candidateId, currentTerm, voteGranted);
        System.out.println("Node " + nodeId + " " + (voteGranted ? "granted" : "denied") + " vote to " + candidateId + " for term " + term);
     }
 
     public void handleVoteResponse(int term, boolean voteGranted) {
-        if(state != RaftState.CANDIDATE || term < currentTerm) {
+        if(state != RaftState.CANDIDATE || term != currentTerm) {
             return; // Ignore responses if not a candidate or term is outdated
         }
 
         if(voteGranted){
             votesReceived++;
-            int majority = (peerIds.size() / 2) + 1;
-
+            int majority = (peerIds.size() + 1) / 2 + 1;
             if(votesReceived >= majority) {
+                System.out.println("I became leader for term " + currentTerm);
                 becomeLeader();
             }
         }
@@ -109,9 +109,9 @@ public class RaftNode {
     }
 
     private void becomeLeader() {
-state = RaftState.CANDIDATE;
+state = RaftState.LEADER;
 electionTimer.cancel();
-        System.out.println("Node " + nodeId + " became leader for term " + currentTerm);
+        System.out.println("Node " + nodeId + " became leader for term " + currentTerm + " 🥳🎉");
 
         startHeartbeat();
     }
